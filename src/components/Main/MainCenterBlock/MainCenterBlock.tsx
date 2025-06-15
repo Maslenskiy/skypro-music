@@ -97,7 +97,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">2:22</span>
+                          <span className={styles.track__time_text}>2:22</span>
                         </div>
                       </div>
                     </div>
@@ -129,7 +129,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">2:22</span>
+                          <span className={styles.track__time_text}>2:22</span>
                         </div>
                       </div>
                     </div>
@@ -162,7 +162,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">4:12</span>
+                          <span className={styles.track__time_text}>4:12</span>
                         </div>
                       </div>
                     </div>
@@ -195,7 +195,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">2:54</span>
+                          <span className={styles.track__time_text}>2:54</span>
                         </div>
                       </div>
                     </div>
@@ -230,7 +230,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">5:20</span>
+                          <span className={styles.track__time_text}>5:20</span>
                         </div>
                       </div>
                     </div>
@@ -265,7 +265,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">3:41</span>
+                          <span className={styles.track__time_text}>3:41</span>
                         </div>
                       </div>
                     </div>
@@ -298,7 +298,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">1:48</span>
+                          <span className={styles.track__time_text}>1:48</span>
                         </div>
                       </div>
                     </div>
@@ -331,7 +331,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">1:48</span>
+                          <span className={styles.track__time_text}>1:48</span>
                         </div>
                       </div>
                     </div>
@@ -364,7 +364,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">1:48</span>
+                          <span className={styles.track__time_text}>1:48</span>
                         </div>
                       </div>
                     </div>
@@ -397,7 +397,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">1:48</span>
+                          <span className={styles.track__time_text}>1:48</span>
                         </div>
                       </div>
                     </div>
@@ -430,7 +430,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">1:48</span>
+                          <span className={styles.track__time_text}>1:48</span>
                         </div>
                       </div>
                     </div>
@@ -463,7 +463,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">1:48</span>
+                          <span className={styles.track__time_text}>1:48</span>
                         </div>
                       </div>
                     </div>
@@ -496,7 +496,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">1:48</span>
+                          <span className={styles.track__time_text}>1:48</span>
                         </div>
                       </div>
                     </div>
@@ -529,7 +529,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">3:32</span>
+                          <span className={styles.track__time_text}>3:32</span>
                         </div>
                       </div>
                     </div>
@@ -561,7 +561,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text">3:36</span>
+                          <span className={styles.track__time_text}>3:36</span>
                         </div>
                       </div>
                     </div>
@@ -589,7 +589,7 @@ export default function MainCenterBlock(){
                           <svg className={styles.track__time_svg}>
                             <use xlinkHref="./sprite.svg#icon-like" />
                           </svg>
-                          <span className="track__time-text" />
+                          <span className={styles.track__time_text} />
                         </div>
                       </div>
                     </div>
