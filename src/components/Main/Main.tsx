@@ -1,4 +1,4 @@
-import Image from "next/image"
+
 import BurgerNav from "./BurgerNav/BurgerNav"
 import NavMenu from "./NavMenu/NavMenu"
 import NavLogo from "./NavLogo/NavLogo"
