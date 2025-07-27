@@ -1,6 +1,5 @@
 
 import BurgerNav from "./BurgerNav/BurgerNav"
-import NavMenu from "./NavMenu/NavMenu"
 import NavLogo from "./NavLogo/NavLogo"
 import MainCenterBlock from "./MainCenterBlock/MainCenterBlock"
 import MainSideBar from "./MainSideBar/MainSideBar"
@@ -14,7 +13,6 @@ export default function Main(){
               <nav className={styles.main__nav}>
                 <NavLogo />
                 <BurgerNav />
-                <NavMenu />
               </nav>
              <MainCenterBlock />
              <MainSideBar />
