@@ -8,7 +8,6 @@ export default function BurgerNav() {
   function burgerClick () {
     setIsOpen((prev) => !prev)
   }
-  console.log(isOpen)
   return (
     <>
       <div className={styles.nav__burger} onClick={burgerClick}>

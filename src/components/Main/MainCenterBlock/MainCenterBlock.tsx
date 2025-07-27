@@ -1,7 +1,10 @@
+
+"use client"
 import classNames from "classnames";
 import styles from "./MainCenterBlock.module.css";
 import PlayListItem from "./PlayListItem/PlayListItem";
 import { data } from "@/app/data";
+import FilterCenterBlock from "./FilterCenterBlock/FilterCenterBlock";
 export default function MainCenterBlock() {
   return (
     <div className={styles.main__centerblock}>
@@ -17,18 +20,7 @@ export default function MainCenterBlock() {
         />
       </div>
       <h2 className={styles.centerblock__h2}>Треки</h2>
-      <div className={styles.centerblock__filter}>
-        <div className={styles.filter__title}>Искать по:</div>
-        <div className={classNames(styles.filter__button, styles._btn_text)}>
-          исполнителю
-        </div>
-        <div className={classNames(styles.filter__button, styles._btn_text)}>
-          году выпуска
-        </div>
-        <div className={classNames(styles.filter__button, styles._btn_text)}>
-          жанру
-        </div>
-      </div>
+      <FilterCenterBlock />
       <div className={styles.centerblock__content}>
         <div className={styles.content__title}>
           <div className={classNames(styles.playlist_title__col, styles.col01)}>
@@ -48,7 +40,7 @@ export default function MainCenterBlock() {
         </div>
         <div className={styles.content__playlist}>
           {data.map((item) => (
-            <PlayListItem key={item._id} item={item}/>
+            <PlayListItem key={item._id} item={item} />
           ))}
         </div>
       </div>
