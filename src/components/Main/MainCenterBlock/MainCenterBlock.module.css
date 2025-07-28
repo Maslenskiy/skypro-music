@@ -120,6 +120,11 @@
   cursor: pointer;
 }
 
+.filter__button_active {
+  border-color: #ad61ff;
+  color: #ad61ff;
+}
+
 
 .centerblock__content {
   display: -webkit-box;

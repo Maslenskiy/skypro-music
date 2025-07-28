@@ -1,5 +1,5 @@
 type CounterBlockProps = {
-  value: number | string;
+  value: number
 };
 export default function CounterBlock({ value }: CounterBlockProps) {
  const displayValue = String(value).length > 99 ? '99+' : value;

@@ -17,19 +17,23 @@ export default function FilterCenterBlock() {
   };
 
   // Типизация для авторов
-  const filterAuthor: string[] = data.map((item: TrackType) => item.author);
-  const uniqueAuthor: string[] = Array.from(new Set(filterAuthor));
+  const filterAuthor = data.map((item: TrackType) => item.author);
+  const uniqueAuthor = Array.from(new Set(filterAuthor));
 
   // Типизация для жанров
-  const filterGenre: string[] = data.flatMap((item: TrackType) => item.genre);
-  const uniqueGenres: string[] = Array.from(new Set(filterGenre));
+  const filterGenre = data.flatMap((item: TrackType) => item.genre);
+  const uniqueGenres = Array.from(new Set(filterGenre));
 
   return (
     <div className={styles.centerblock__filter}>
       <div className={styles.filter__title}>Искать по:</div>
       <div
         onClick={() => handleClick("artist")}
-        className={classNames(styles.filter__button, styles._btn_text)}
+        className={classNames(
+          styles.filter__button,
+          styles._btn_text,
+          openModal === "artist" && styles.filter__button_active
+        )}
       >
         {openModal === "artist" && <CounterBlock value={uniqueAuthor.length} />}
         исполнитель
@@ -37,7 +41,11 @@ export default function FilterCenterBlock() {
       </div>
       <div
         onClick={() => handleClick("year")}
-        className={classNames(styles.filter__button, styles._btn_text)}
+        className={classNames(
+          styles.filter__button,
+          styles._btn_text,
+          openModal === "year" && styles.filter__button_active
+        )}
       >
         {openModal === "year" && <CounterBlock value={3} />}
         году выпуска
@@ -47,7 +55,11 @@ export default function FilterCenterBlock() {
       </div>
       <div
         onClick={() => handleClick("genre")}
-        className={classNames(styles.filter__button, styles._btn_text)}
+        className={classNames(
+          styles.filter__button,
+          styles._btn_text,
+          openModal === "genre" && styles.filter__button_active
+        )}
       >
         {openModal === "genre" && <CounterBlock value={uniqueGenres.length} />}
         жанру
