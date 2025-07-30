@@ -82,6 +82,7 @@
   border: 1px solid #ffffff;
   border-radius: 60px;
   padding: 6px 20px;
+  position: relative;
 }
 
 .filter__button:not(:last-child) {
@@ -117,6 +118,11 @@
   fill: #696969;
   stroke: #ffffff;
   cursor: pointer;
+}
+
+.filter__button_active {
+  border-color: #ad61ff;
+  color: #ad61ff;
 }
 
 

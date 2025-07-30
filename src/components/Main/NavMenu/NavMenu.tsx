@@ -1,7 +1,9 @@
+"use client"
 import styles from './NavMenu.module.css'
-export default function NavMenu(){
+export default function NavMenu({ isOpen }: { isOpen: boolean } ){
+  if(!isOpen)return
     return(
-        <div className={styles.nav__menu }>
+        <div className={styles.nav__menu}>
                   <ul className={styles.menu__list}>
                     <li className={styles.menu__item}>
                       <a href="#" className={styles.menu__link}>
