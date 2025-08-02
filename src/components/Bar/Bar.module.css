@@ -212,6 +212,7 @@
   line-height: 24px;
   color: #ffffff;
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .track_play__album {
@@ -227,6 +228,7 @@
   font-size: 13px;
   line-height: 24px;
   color: #ffffff;
+  cursor: pointer;
 }
 
 .track_play__like_dis {

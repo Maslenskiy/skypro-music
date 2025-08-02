@@ -1,4 +1,5 @@
 import { Montserrat } from 'next/font/google'
+import ReduxProvider from '@/store/ReduxProvider';
 
 const montserrat = Montserrat({
   subsets: ['latin', 'cyrillic'],
@@ -16,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
+    <ReduxProvider >
     <html lang="ru">
       <body style={{backgroundColor:'#383838'}} className={montserrat.className}>{children}</body>
     </html>
+    </ReduxProvider>
   )
 }
