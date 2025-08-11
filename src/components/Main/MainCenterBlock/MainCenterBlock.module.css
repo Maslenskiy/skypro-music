@@ -255,6 +255,38 @@
   -ms-flex-pack: center;
   justify-content: center;
   margin-right: 17px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.track__title_image_playing {
+  background: #313131;
+  border: 2px solid #d9b6ff;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(217, 182, 255, 0.5);
+}
+
+/* Статичная обводка для выбранного трека на паузе */
+.track__title_image.current_track_paused {
+  background: #313131;
+  border: 2px solid #d9b6ff;
+  box-shadow: 0 0 5px rgba(217, 182, 255, 0.3);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 5px rgba(217, 182, 255, 0.5);
+    border-color: #d9b6ff;
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(217, 182, 255, 0.8);
+    border-color: #b672ff;
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(217, 182, 255, 0.5);
+    border-color: #d9b6ff;
+  }
 }
 
 
@@ -265,12 +297,51 @@
   stroke: #4e4e4e;
 }
 
+.playButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.playButton:hover {
+  transform: scale(1.1);
+}
+
+.playButton:hover .track__title_svg {
+  stroke: #d9b6ff;
+}
+
+.loadingSpinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #4e4e4e;
+  border-top: 2px solid #d9b6ff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.playButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .track__title_link {
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   color: #ffffff;
+  cursor: pointer;
 }
 
 
@@ -330,4 +401,35 @@
   line-height: 24px;
   text-align: right;
   color: #696969;
+}
+
+/* Фиолетовая точка для текущего трека */
+.current_track_dot {
+  width: 8px;
+  height: 8px;
+  background-color: #d9b6ff;
+  border-radius: 50%;
+  margin-right: 8px;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+.current_track_dot_playing {
+  animation: dotPulse 2s ease-in-out infinite;
+}
+
+@keyframes dotPulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
