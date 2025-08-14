@@ -5,6 +5,9 @@
   width: 100%;
   background: rgba(28, 28, 28, 0.5);
 }
+.audio {
+  display: none;
+}
 
 .bar__content {
   display: -webkit-box;
@@ -16,31 +19,13 @@
   flex-direction: column;
 }
 
-.bar__player_progress {
+.bar__playerProgress {
   width: 100%;
   height: 5px;
   background: #2e2e2e;
-  position: relative;
-  cursor: pointer;
 }
 
-.bar__player_progress_fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background: #ad61ff; /* purple */
-}
-
-.bar__time {
-  display: flex;
-  justify-content: flex-end;
-  color: #d9d9d9;
-  font-size: 12px;
-  padding: 4px 10px 2px;
-}
-
-.bar__player_block {
+.bar__playerBlock {
   height: 73px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -70,7 +55,7 @@
   justify-content: flex-start;
 }
 
-.bar__volume_block {
+.bar__volumeBlock {
   width: auto;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -92,11 +77,11 @@
   padding: 0 27px 0 31px;
 }
 
-.player__btn_prev,
-.player__btn_play,
-.player__btn_next,
-.player__btn_repeat,
-.player__btn_shuffle {
+.player__btnPrev,
+.player__btnPlay,
+.player__btnNext,
+.player__btnRepeat,
+.player__btnShuffle {
   padding: 5px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -104,53 +89,53 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
+}
+
+.player__btnPrev {
+  margin-right: 23px;
+}
+
+.player__btnPrevSvg {
+  width: 15px;
+  height: 14px;
   cursor: pointer;
 }
 
-
-.player__btn_prev {
+.player__btnPlay {
   margin-right: 23px;
 }
 
-.player__btn_prev_svg {
-  width: 15px;
-  height: 14px;
-}
-
-.player__btn_play {
-  margin-right: 23px;
-}
-
-.player__btn_play_svg {
+.player__btnPlaySvg {
   width: 22px;
   height: 20px;
   fill: #d9d9d9;
 }
 
-.player__btn_next {
+.player__btnNext {
   margin-right: 28px;
   fill: #a53939;
 }
 
-.player__btn_next_svg {
+.player__btnNextSvg {
   width: 15px;
   height: 14px;
   fill: inherit;
   stroke: #d9d9d9;
+  cursor: pointer;
 }
 
-.player__btn_repeat {
+.player__btnRepeat {
   margin-right: 24px;
 }
 
-.player__btn_repeat_svg {
+.player__btnRepeatSvg {
   width: 18px;
   height: 12px;
   fill: transparent;
   stroke: #696969;
 }
 
-.player__btn-shuffle {
+.player__btnShuffle {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -159,18 +144,17 @@
   align-items: center;
 }
 
-.player__btn_shuffle_svg {
+.player__btnShuffleSvg {
   width: 19px;
   height: 12px;
   fill: transparent;
   stroke: #696969;
 }
-
-.icon_active {
+.activeIcon .player__btnShuffleSvg {
   stroke: #ffffff;
 }
 
-.player__track_play {
+.player__trackPlay {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -180,19 +164,19 @@
   flex-direction: row;
 }
 
-.track_play__contain {
+.trackPlay__contain {
   width: auto;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: auto 1fr;
   grid-template-columns: auto 1fr;
-  grid-template-areas: "image author" "image album";
+  grid-template-areas: 'image author' 'image album';
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
 }
 
-.track_play__image {
+.trackPlay__image {
   width: 51px;
   height: 51px;
   background-color: #313131;
@@ -210,50 +194,47 @@
   -ms-grid-row-span: 2;
   grid-column: 1;
   grid-area: image;
-  
 }
 
-.track_play__svg {
+.trackPlay__svg {
   width: 18px;
   height: 17px;
   fill: transparent;
   stroke: #4e4e4e;
 }
 
-.track_play__author {
+.trackPlay__author {
   grid-row: 1;
   grid-column: 2;
   grid-area: author;
   min-width: 49px;
 }
 
-.track_play__author_link {
+.trackPlay__authorLink {
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
   color: #ffffff;
   white-space: nowrap;
-  cursor: pointer;
 }
 
-.track_play__album {
+.trackPlay__album {
   grid-row: 2;
   grid-column: 2;
   grid-area: album;
   min-width: 49px;
 }
 
-.track_play__album_link {
+.trackPlay__albumLink {
   font-style: normal;
   font-weight: 400;
   font-size: 13px;
   line-height: 24px;
   color: #ffffff;
-  cursor: pointer;
 }
 
-.track_play__like_dis {
+.trackPlay__likeDis {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -267,29 +248,27 @@
   margin-left: 26%;
 }
 
-.track_play__like,
-.track_play__dislike {
+.trackPlay__like,
+.trackPlay__dislike {
   padding: 5px;
 }
 
-.track_play__like_svg {
+.trackPlay__likeSvg {
   width: 14px;
   height: 12px;
   fill: transparent;
   stroke: #696969;
-    cursor: pointer;
 }
 
-.track_play__dislike {
+.trackPlay__dislike {
   margin-left: 28.5px;
 }
 
-.track_play__dislike_svg {
+.trackPlay__dislikeSvg {
   width: 14.34px;
   height: 13px;
   fill: transparent;
   stroke: #696969;
-cursor: pointer;
 }
 
 .volume__content {
@@ -303,9 +282,9 @@ cursor: pointer;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: end;
-  -ms-flex-pack: end;
-  justify-content: end;
+  -webkit-box-pack: flex-end;
+  -ms-flex-pack: flex-end;
+  justify-content: flex-end;
 }
 
 .volume__image {
@@ -322,9 +301,86 @@ cursor: pointer;
 
 .volume__progress {
   width: 109px;
+  display: flex;
+  align-items: center;
 }
 
-.volume__progress_line {
-  width: 109px;
-   cursor: pointer;
+.volume__progressLine {
+  width: 100%;
+  height: 2px;
+  appearance: none;
+  background: #797979;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+.volume__progressLine::-webkit-slider-runnable-track {
+  height: 2px;
+  background: #797979;
+  border-radius: 5px;
+}
+
+.volume__progressLine::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #1a1a1a;
+  border: 2px solid white;
+  border-radius: 50%;
+  position: relative;
+  margin-top: -7px;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.btnIcon:hover svg {
+  fill: transparent;
+  stroke: #acacac;
+  cursor: pointer;
+}
+
+.btnIcon:active svg {
+  fill: transparent;
+  stroke: #ffffff;
+  cursor: pointer;
+}
+
+.btnIcon:active .trackPlay__likeSvg,
+.btnIcon:active .trackPlay__dislikeSvg {
+  fill: #696969;
+  stroke: #ffffff;
+  cursor: pointer;
+}
+
+.btn-text {
+  &:hover {
+    border-color: #d9b6ff;
+    color: #d9b6ff;
+    cursor: pointer;
+  }
+  &:active {
+    border-color: #ad61ff;
+    color: #ad61ff;
+    cursor: pointer;
+  }
+}
+
+.activeIcon svg {
+  stroke: #ffffff;
+  fill: #ffffff;
+}
+.bar__progressTimeWrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bar__progressTime {
+  font-size: 12px;
+  color: #b1b1b1;
+  min-width: 40px;
+  text-align: center;
 }
