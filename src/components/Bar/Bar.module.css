@@ -20,6 +20,24 @@
   width: 100%;
   height: 5px;
   background: #2e2e2e;
+  position: relative;
+  cursor: pointer;
+}
+
+.bar__player_progress_fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: #ad61ff; /* purple */
+}
+
+.bar__time {
+  display: flex;
+  justify-content: flex-end;
+  color: #d9d9d9;
+  font-size: 12px;
+  padding: 4px 10px 2px;
 }
 
 .bar__player_block {
@@ -146,6 +164,10 @@
   height: 12px;
   fill: transparent;
   stroke: #696969;
+}
+
+.icon_active {
+  stroke: #ffffff;
 }
 
 .player__track_play {

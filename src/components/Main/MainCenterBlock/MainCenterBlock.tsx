@@ -5,7 +5,17 @@ import styles from "./MainCenterBlock.module.css";
 import PlayListItem from "./PlayListItem/PlayListItem";
 import { data } from "@/app/data";
 import FilterCenterBlock from "./FilterCenterBlock/FilterCenterBlock";
+import { useEffect } from "react";
+import { useAppDispatch } from "@/store/store";
+import { setPlaylist } from "@/store/features/trackSlice";
 export default function MainCenterBlock() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    // Set the playlist for player logic on mount (could be improved to react to filters)
+    dispatch(setPlaylist(data));
+  }, [dispatch]);
+
   return (
     <div className={styles.main__centerblock}>
       <div className={styles.centerblock__search}>
