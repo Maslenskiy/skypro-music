@@ -1,0 +1,35 @@
+import axios from 'axios';
+import { BASE_URL } from '../constants';
+import { MusicData } from '@/sharedTypes/sharedTypes';
+
+const api = axios.create({
+  baseURL: BASE_URL,
+});
+
+export const getTracks = (): Promise<MusicData[]> => {
+  return api
+    .get('/catalog/track/all/')
+    .then((res) => res.data.data)
+    .catch((err) => {
+      throw err;
+    });
+};
+
+export const getSelectionById = async (
+  id: string,
+): Promise<{
+  name: string;
+  items: number[];
+}> => {
+  const response = await api.get(`/catalog/selection/${id}/`);
+  const data = response.data.data;
+
+  if (!data) {
+    throw new Error(`Плейлист с ID ${id} не найден`);
+  }
+
+  return {
+    name: data.name,
+    items: data.items,
+  };
+};
