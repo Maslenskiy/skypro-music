@@ -43,8 +43,8 @@ export default function Signin() {
       })
       .then((res) => {
         console.log(res);
-        dispatch(setAccessToken(res.access))
-          dispatch(setRefreshToken(res.refresh))
+        dispatch(setAccessToken(res.access));
+        dispatch(setRefreshToken(res.refresh));
         router.push('/music/main');
       })
       .catch((error) => {

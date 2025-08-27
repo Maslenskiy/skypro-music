@@ -11,7 +11,14 @@ export default function Profile() {
   const router = useRouter();
 
   const handleLogout = () => {
-    dispatch(clearUser()); // Очищаем данные через Redux
+    // Очищаем все данные о пользователе
+    localStorage.removeItem('username');
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    
+    // Очищаем Redux store
+    dispatch(clearUser());
+    
     router.push('/auth/signin');
   };
 

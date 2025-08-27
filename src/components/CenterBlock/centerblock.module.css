@@ -25,3 +25,15 @@
   -ms-flex-direction: column;
   flex-direction: column;
 }
+
+.error {
+  color: #e74c3c;
+  background-color: #fceaea;
+  border: 1px solid #e0b4b4;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+  margin: 16px 0;
+  font-size: 15px;
+}
