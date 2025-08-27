@@ -1,155 +1,131 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TrackType } from "@/components/SharedTypes/SharedTypes";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { MusicData } from '@/sharedTypes/sharedTypes';
 
 type initialStateType = {
-  currentTrack: TrackType | null;
-  currentPlaylist: TrackType[];
+  currentTrack: null | MusicData;
   isPlay: boolean;
   isShuffle: boolean;
-  isRepeat: boolean;
-  shuffleOrderIds: number[];
-  shufflePosition: number;
+  shuffledPlaylist: MusicData[];
+  tracks: MusicData[];
+  allTracks: MusicData[];
+  filteredTracks: MusicData[];
+  fetchError: null | string;
+  fetchIsLoading: boolean;
+  activeFilter: string | null;
+  filterValue: string | null;
 };
 
 const initialState: initialStateType = {
   currentTrack: null,
-  currentPlaylist: [],
   isPlay: false,
   isShuffle: false,
-  isRepeat: false,
-  shuffleOrderIds: [],
-  shufflePosition: 0,
+  tracks: [],
+  shuffledPlaylist: [],
+  allTracks: [],
+  filteredTracks: [],
+  fetchError: null,
+  fetchIsLoading: true,
+  activeFilter: null,
+  filterValue: null,
 };
 
-function generateShuffledOrder(
-  playlist: TrackType[],
-  currentTrackId?: number
-): number[] {
-  const ids = playlist.map((t) => t._id);
-  for (let i = ids.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [ids[i], ids[j]] = [ids[j], ids[i]];
-  }
-  if (currentTrackId !== undefined) {
-    const idx = ids.indexOf(currentTrackId);
-    if (idx > 0) {
-      ids.splice(idx, 1);
-      ids.unshift(currentTrackId);
-    }
-  }
-  return ids;
-}
-
-function findIndexById(
-  playlist: TrackType[],
-  id: number | undefined
-): number {
-  if (id === undefined) return -1;
-  return playlist.findIndex((t) => t._id === id);
-}
-
 const trackSlice = createSlice({
-  name: "tracks",
+  name: 'tracks',
   initialState,
   reducers: {
-    setCurrentTrack: (state, action: PayloadAction<TrackType>) => {
+    setCurrentTrack: (state, action: PayloadAction<MusicData>) => {
       state.currentTrack = action.payload;
-      if (state.isShuffle) {
-        const idxInShuffle = state.shuffleOrderIds.indexOf(action.payload._id);
-        if (idxInShuffle !== -1) state.shufflePosition = idxInShuffle;
-      }
+    },
+    setCurrentPlaylist: (state, action: PayloadAction<MusicData[]>) => {
+      state.tracks = action.payload;
+      state.shuffledPlaylist = [...state.tracks].sort(
+        () => Math.random() - 0.5,
+      );
+      // Обновляем отфильтрованные треки при смене подборки
+      state.filteredTracks = action.payload;
+      // Сбрасываем активный фильтр при смене подборки
+      state.activeFilter = null;
+      state.filterValue = null;
     },
     setIsPlay: (state, action: PayloadAction<boolean>) => {
       state.isPlay = action.payload;
     },
-    setPlaylist: (state, action: PayloadAction<TrackType[]>) => {
-      state.currentPlaylist = action.payload;
-      const currentId = state.currentTrack?._id;
-      if (state.isShuffle) {
-        state.shuffleOrderIds = generateShuffledOrder(action.payload, currentId);
-        state.shufflePosition = currentId
-          ? state.shuffleOrderIds.indexOf(currentId)
-          : 0;
-      } else {
-        if (
-          currentId !== undefined &&
-          findIndexById(action.payload, currentId) === -1
-        ) {
-          state.currentTrack = null;
-          state.isPlay = false;
-        }
-      }
-    },
     toggleShuffle: (state) => {
       state.isShuffle = !state.isShuffle;
-      const currentId = state.currentTrack?._id;
-      if (state.isShuffle) {
-        state.shuffleOrderIds = generateShuffledOrder(
-          state.currentPlaylist,
-          currentId
+    },
+    setNextTrack: (state) => {
+      if (state.currentTrack && state.tracks.length > 0) {
+        const playlist = state.isShuffle
+          ? state.shuffledPlaylist
+          : state.tracks;
+        const curIndex = state.tracks.findIndex(
+          (el) => el._id === state.currentTrack?._id,
         );
-        state.shufflePosition = currentId
-          ? state.shuffleOrderIds.indexOf(currentId)
-          : 0;
-      } else {
-        state.shuffleOrderIds = [];
-        state.shufflePosition = 0;
-      }
-    },
-    toggleRepeat: (state) => {
-      state.isRepeat = !state.isRepeat;
-    },
-    nextTrack: (state) => {
-      if (!state.currentTrack) return;
-      const playlist = state.currentPlaylist;
-      if (playlist.length === 0) return;
+        const nextIndex = curIndex + 1;
 
-      if (state.isShuffle) {
-        const pos = state.shufflePosition;
-        if (pos < state.shuffleOrderIds.length - 1) {
-          const nextId = state.shuffleOrderIds[pos + 1];
-          const nextIdx = findIndexById(playlist, nextId);
-          if (nextIdx !== -1) {
-            state.currentTrack = playlist[nextIdx];
-            state.shufflePosition = pos + 1;
-            state.isPlay = true;
-          }
-        } else {
-          // at end in shuffle, do nothing
-        }
-      } else {
-        const currentIdx = findIndexById(playlist, state.currentTrack._id);
-        if (currentIdx !== -1 && currentIdx < playlist.length - 1) {
-          state.currentTrack = playlist[currentIdx + 1];
-          state.isPlay = true;
-        } else {
-          // at end in normal order, do nothing
-        }
+        if (nextIndex >= playlist.length) return;
+
+        state.currentTrack = playlist[nextIndex];
       }
     },
-    prevTrack: (state) => {
-      if (!state.currentTrack) return;
-      const playlist = state.currentPlaylist;
-      if (playlist.length === 0) return;
+    setPrevTrack: (state) => {
+      if (state.currentTrack && state.tracks.length > 0) {
+        const curIndex = state.tracks.findIndex(
+          (el) => el._id === state.currentTrack?._id,
+        );
+        const prevIndex = curIndex - 1;
 
-      if (state.isShuffle) {
-        const pos = state.shufflePosition;
-        if (pos > 0) {
-          const prevId = state.shuffleOrderIds[pos - 1];
-          const prevIdx = findIndexById(playlist, prevId);
-          if (prevIdx !== -1) {
-            state.currentTrack = playlist[prevIdx];
-            state.shufflePosition = pos - 1;
-            state.isPlay = true;
-          }
+        if (prevIndex < 0) return;
+
+        state.currentTrack = state.tracks[prevIndex];
+      }
+    },
+    setAllTracks: (state, action: PayloadAction<MusicData[]>) => {
+      state.allTracks = action.payload;
+      state.filteredTracks = action.payload; // Инициализируем отфильтрованные треки
+    },
+    setFetchError: (state, action: PayloadAction<string>) => {
+      state.fetchError = action.payload;
+    },
+    setFetchIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.fetchIsLoading = action.payload;
+    },
+    setFilter: (state, action: PayloadAction<{ type: string; value: string }>) => {
+      state.activeFilter = action.payload.type;
+      state.filterValue = action.payload.value;
+      
+      // Применяем фильтр к текущим трекам (подборки), а не ко всем трекам
+      const tracksToFilter = state.tracks.length > 0 ? state.tracks : state.allTracks;
+      
+      if (action.payload.value) {
+        switch (action.payload.type) {
+          case 'author':
+            state.filteredTracks = tracksToFilter.filter(
+              track => track.author.toLowerCase().includes(action.payload.value.toLowerCase())
+            );
+            break;
+          case 'genre':
+            state.filteredTracks = tracksToFilter.filter(
+              track => track.genre.some(g => g.toLowerCase().includes(action.payload.value.toLowerCase()))
+            );
+            break;
+          case 'year':
+            state.filteredTracks = tracksToFilter.filter(
+              track => new Date(track.release_date).getFullYear().toString() === action.payload.value
+            );
+            break;
+          default:
+            state.filteredTracks = tracksToFilter;
         }
       } else {
-        const currentIdx = findIndexById(playlist, state.currentTrack._id);
-        if (currentIdx > 0) {
-          state.currentTrack = playlist[currentIdx - 1];
-          state.isPlay = true;
-        }
+        state.filteredTracks = tracksToFilter;
       }
+    },
+    clearFilter: (state) => {
+      state.activeFilter = null;
+      state.filterValue = null;
+      // Возвращаемся к текущим трекам (подборки), а не ко всем трекам
+      state.filteredTracks = state.tracks.length > 0 ? state.tracks : state.allTracks;
     },
   },
 });
@@ -157,10 +133,14 @@ const trackSlice = createSlice({
 export const {
   setCurrentTrack,
   setIsPlay,
-  setPlaylist,
+  setCurrentPlaylist,
+  setNextTrack,
+  setPrevTrack,
   toggleShuffle,
-  toggleRepeat,
-  nextTrack,
-  prevTrack,
+  setAllTracks,
+  setFetchError,
+  setFetchIsLoading,
+  setFilter,
+  clearFilter,
 } = trackSlice.actions;
 export const trackSliceReducer = trackSlice.reducer;
