@@ -2,7 +2,14 @@
 import { useState, useRef } from 'react';
 import classNames from 'classnames';
 import styles from './filter.module.css';
-import { data } from '@/data';
+import { useAppDispatch } from '@/store/store';
+import { useSelector } from 'react-redux';
+import {
+  setFilterAuthors,
+  setFilterGenres,
+  setFilterYear,
+} from '@/store/features/trackSlice';
+import { RootState } from '@/store/store';
 
 export default function Filter() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
@@ -11,16 +18,30 @@ export default function Filter() {
     left: number;
   }>({ top: 0, left: 0 });
 
+  const dispatch = useAppDispatch();
+  const filters = useSelector((state: RootState) => state.tracks.filters);
+
   const authorRef = useRef<HTMLDivElement>(null);
   const yearRef = useRef<HTMLDivElement>(null);
   const genreRef = useRef<HTMLDivElement>(null);
+  const onSelectGenre = (genre: string) => {
+    dispatch(setFilterGenres(genre));
+  };
+
+  const onSelectYear = (year: number) => {
+    dispatch(setFilterYear(year.toString()));
+  };
+
+  const allTracks = useSelector((state: RootState) => state.tracks.allTracks);
 
   const authors = Array.from(
-    new Set(data.map((track) => track.author).filter(Boolean)),
+    new Set(allTracks.map((track) => track.author).filter(Boolean)),
   );
-  const genres = Array.from(new Set(data.flatMap((track) => track.genre)));
+  const genres = Array.from(new Set(allTracks.flatMap((track) => track.genre)));
   const years = Array.from(
-    new Set(data.map((track) => new Date(track.release_date).getFullYear())),
+    new Set(
+      allTracks.map((track) => new Date(track.release_date).getFullYear()),
+    ),
   ).sort((a, b) => a - b);
 
   const handleFilterClick = (
@@ -43,7 +64,11 @@ export default function Filter() {
     setActiveFilter(filter);
   };
 
-  const renderFilterList = (items: (string | number)[]) => (
+  const onSelectAuthor = (author: string) => {
+    dispatch(setFilterAuthors(author));
+  };
+
+  const renderFilterList = (items: (string | number)[], filterType: string) => (
     <div
       className={styles.filter__list}
       style={{
@@ -51,11 +76,29 @@ export default function Filter() {
         left: `${dropdownPosition.left}px`,
       }}
     >
-      {items.map((item) => (
-        <div key={item} className={styles.filter__listItem}>
-          {item}
-        </div>
-      ))}
+      {items.map((item) => {
+        const itemStr = item.toString();
+        const isSelected =
+          (filterType === 'author' && filters.authors.includes(itemStr)) ||
+          (filterType === 'genre' && filters.genres.includes(itemStr)) ||
+          (filterType === 'year' && filters.years.includes(itemStr));
+
+        return (
+          <div
+            key={itemStr}
+            className={classNames(styles.filter__listItem, {
+              [styles.selected]: isSelected,
+            })}
+            onClick={() => {
+              if (filterType === 'author') onSelectAuthor(itemStr);
+              if (filterType === 'genre') onSelectGenre(itemStr);
+              if (filterType === 'year') onSelectYear(Number(itemStr));
+            }}
+          >
+            {itemStr}
+          </div>
+        );
+      })}
     </div>
   );
 
@@ -95,9 +138,9 @@ export default function Filter() {
         </div>
       </div>
 
-      {activeFilter === 'author' && renderFilterList(authors)}
-      {activeFilter === 'year' && renderFilterList(years)}
-      {activeFilter === 'genre' && renderFilterList(genres)}
+      {activeFilter === 'author' && renderFilterList(authors, 'author')}
+      {activeFilter === 'year' && renderFilterList(years, 'year')}
+      {activeFilter === 'genre' && renderFilterList(genres, 'genre')}
     </>
   );
 }

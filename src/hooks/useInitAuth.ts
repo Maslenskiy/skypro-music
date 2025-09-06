@@ -14,7 +14,6 @@ export const useInitAuth = () => {
     const refresh = localStorage.getItem('refresh') || '';
     const username = localStorage.getItem('username') || '';
 
-    console.log('[AUTH INIT]', { access, refresh, username });
     dispatch(setAccessToken(access));
     dispatch(setRefreshToken(refresh));
     dispatch(setUserName(username));

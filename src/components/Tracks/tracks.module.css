@@ -201,3 +201,31 @@
     opacity: 0.7;
   }
 }
+
+.skeletonBox {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(90deg, #eee 25%, #ddd 37%, #eee 63%);
+  background-size: 400% 100%;
+  animation: loading 1.4s ease infinite;
+  border-radius: 4px;
+}
+
+.skeletonText {
+  width: 150px;
+  height: 16px;
+  margin: 8px 0;
+  background: linear-gradient(90deg, #eee 25%, #ddd 37%, #eee 63%);
+  background-size: 400% 100%;
+  animation: loading 1.4s ease infinite;
+  border-radius: 4px;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}
