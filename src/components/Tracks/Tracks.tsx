@@ -11,12 +11,14 @@ import {
 import { MusicData } from '@/sharedTypes/sharedTypes';
 import { useLikeTrack } from '@/hooks/useLikeTracks';
 import { useEffect } from 'react';
+import { toast } from 'react-toastify';
 
 type trackProp = {
   tracks: MusicData[] | undefined;
+  loading: boolean;
 };
 
-export default function Tracks({ tracks }: trackProp) {
+export default function Tracks({ tracks, loading = false }: trackProp) {
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const isPlay = useAppSelector((state) => state.tracks.isPlay);
@@ -32,9 +34,44 @@ export default function Tracks({ tracks }: trackProp) {
 
   useEffect(() => {
     if (errorMsg) {
-      alert(errorMsg);
+      toast.error(errorMsg);
     }
   }, [errorMsg]);
+  if (loading) {
+    return (
+      <div className={styles.content__playlist}>
+        <div className={styles.scrollContainer}>
+          {[...Array(8)].map((_, index) => (
+            <div key={index} className={styles.playlist__item}>
+              <div className={styles.playlist__track}>
+                <div className={styles.track__title}>
+                  <div
+                    className={
+                      styles.track__titleImage + ' ' + styles.skeletonBox
+                    }
+                  />
+                  <div
+                    className={
+                      styles.track__titleText + ' ' + styles.skeletonText
+                    }
+                  />
+                </div>
+                <div
+                  className={styles.track__author + ' ' + styles.skeletonText}
+                />
+                <div
+                  className={styles.track__album + ' ' + styles.skeletonText}
+                />
+                <div
+                  className={styles.track__time + ' ' + styles.skeletonText}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (!Array.isArray(tracks)) {
     return (
@@ -47,7 +84,7 @@ export default function Tracks({ tracks }: trackProp) {
       <div className={styles.scrollContainer}>
         {tracks.map((track, index) => {
           const isLike = favoriteTracks.some((t) => t._id === track._id);
-          
+
           const isLoading = loadingTrackId === track._id;
 
           return (

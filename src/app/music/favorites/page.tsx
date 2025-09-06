@@ -21,7 +21,7 @@ export default function FavoritesPage() {
 
   useEffect(() => {
     if (mounted && !access) {
-      router.replace('/auth/signin');
+      router.replace('/login');
     }
   }, [access, mounted, router]);
 
