@@ -1,5 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { MusicData } from '@/sharedTypes/sharedTypes';
+import { loadFavoriteTracks } from './trackThunks';
+import { removeFavoriteTrack } from './removeFavoriteTrack';
+import { addFavoriteTrack } from './addFavoriteTrack';
 
 type initialStateType = {
   currentTrack: null | MusicData;
@@ -7,12 +10,10 @@ type initialStateType = {
   isShuffle: boolean;
   shuffledPlaylist: MusicData[];
   tracks: MusicData[];
+  favoriteTracks: MusicData[];
   allTracks: MusicData[];
-  filteredTracks: MusicData[];
   fetchError: null | string;
   fetchIsLoading: boolean;
-  activeFilter: string | null;
-  filterValue: string | null;
 };
 
 const initialState: initialStateType = {
@@ -22,11 +23,9 @@ const initialState: initialStateType = {
   tracks: [],
   shuffledPlaylist: [],
   allTracks: [],
-  filteredTracks: [],
+  favoriteTracks: [],
   fetchError: null,
   fetchIsLoading: true,
-  activeFilter: null,
-  filterValue: null,
 };
 
 const trackSlice = createSlice({
@@ -41,11 +40,6 @@ const trackSlice = createSlice({
       state.shuffledPlaylist = [...state.tracks].sort(
         () => Math.random() - 0.5,
       );
-      // Обновляем отфильтрованные треки при смене подборки
-      state.filteredTracks = action.payload;
-      // Сбрасываем активный фильтр при смене подборки
-      state.activeFilter = null;
-      state.filterValue = null;
     },
     setIsPlay: (state, action: PayloadAction<boolean>) => {
       state.isPlay = action.payload;
@@ -58,7 +52,7 @@ const trackSlice = createSlice({
         const playlist = state.isShuffle
           ? state.shuffledPlaylist
           : state.tracks;
-        const curIndex = state.tracks.findIndex(
+        const curIndex = playlist.findIndex(
           (el) => el._id === state.currentTrack?._id,
         );
         const nextIndex = curIndex + 1;
@@ -70,19 +64,24 @@ const trackSlice = createSlice({
     },
     setPrevTrack: (state) => {
       if (state.currentTrack && state.tracks.length > 0) {
-        const curIndex = state.tracks.findIndex(
+        const playlist = state.isShuffle
+          ? state.shuffledPlaylist
+          : state.tracks;
+        const curIndex = playlist.findIndex(
           (el) => el._id === state.currentTrack?._id,
         );
         const prevIndex = curIndex - 1;
 
         if (prevIndex < 0) return;
 
-        state.currentTrack = state.tracks[prevIndex];
+        state.currentTrack = playlist[prevIndex];
       }
     },
     setAllTracks: (state, action: PayloadAction<MusicData[]>) => {
       state.allTracks = action.payload;
-      state.filteredTracks = action.payload; // Инициализируем отфильтрованные треки
+    },
+    setFavoriteTracks: (state, action: PayloadAction<MusicData[]>) => {
+      state.favoriteTracks = action.payload;
     },
     setFetchError: (state, action: PayloadAction<string>) => {
       state.fetchError = action.payload;
@@ -90,43 +89,57 @@ const trackSlice = createSlice({
     setFetchIsLoading: (state, action: PayloadAction<boolean>) => {
       state.fetchIsLoading = action.payload;
     },
-    setFilter: (state, action: PayloadAction<{ type: string; value: string }>) => {
-      state.activeFilter = action.payload.type;
-      state.filterValue = action.payload.value;
-      
-      // Применяем фильтр к текущим трекам (подборки), а не ко всем трекам
-      const tracksToFilter = state.tracks.length > 0 ? state.tracks : state.allTracks;
-      
-      if (action.payload.value) {
-        switch (action.payload.type) {
-          case 'author':
-            state.filteredTracks = tracksToFilter.filter(
-              track => track.author.toLowerCase().includes(action.payload.value.toLowerCase())
-            );
-            break;
-          case 'genre':
-            state.filteredTracks = tracksToFilter.filter(
-              track => track.genre.some(g => g.toLowerCase().includes(action.payload.value.toLowerCase()))
-            );
-            break;
-          case 'year':
-            state.filteredTracks = tracksToFilter.filter(
-              track => new Date(track.release_date).getFullYear().toString() === action.payload.value
-            );
-            break;
-          default:
-            state.filteredTracks = tracksToFilter;
-        }
-      } else {
-        state.filteredTracks = tracksToFilter;
-      }
+    addLikedTracks: (state, action: PayloadAction<MusicData>) => {
+      state.favoriteTracks = [...state.favoriteTracks, action.payload];
     },
-    clearFilter: (state) => {
-      state.activeFilter = null;
-      state.filterValue = null;
-      // Возвращаемся к текущим трекам (подборки), а не ко всем трекам
-      state.filteredTracks = state.tracks.length > 0 ? state.tracks : state.allTracks;
+    removeLikedTracks: (state, action: PayloadAction<MusicData>) => {
+      state.favoriteTracks = state.favoriteTracks.filter(
+        (track) => track._id !== action.payload._id,
+      );
     },
+  },
+  extraReducers: (builder) => {
+    builder
+
+      .addCase(addFavoriteTrack.pending, (state) => {
+        state.fetchIsLoading = true;
+        state.fetchError = null;
+      })
+      .addCase(addFavoriteTrack.fulfilled, (state, action) => {
+        state.favoriteTracks = action.payload;
+        state.fetchIsLoading = false;
+        state.fetchError = null;
+      })
+      .addCase(addFavoriteTrack.rejected, (state, action) => {
+        state.fetchIsLoading = false;
+        state.fetchError = action.payload as string;
+      })
+      .addCase(loadFavoriteTracks.pending, (state) => {
+        state.fetchIsLoading = true;
+        state.fetchError = null;
+      })
+      .addCase(loadFavoriteTracks.fulfilled, (state, action) => {
+        state.favoriteTracks = action.payload;
+        state.fetchIsLoading = false;
+      })
+      .addCase(loadFavoriteTracks.rejected, (state, action) => {
+        state.fetchIsLoading = false;
+        state.fetchError = action.payload as string;
+      })
+
+      .addCase(removeFavoriteTrack.pending, (state) => {
+        state.fetchIsLoading = true;
+        state.fetchError = null;
+      })
+      .addCase(removeFavoriteTrack.fulfilled, (state, action) => {
+        state.favoriteTracks = action.payload;
+        state.fetchIsLoading = false;
+        state.fetchError = null;
+      })
+      .addCase(removeFavoriteTrack.rejected, (state, action) => {
+        state.fetchIsLoading = false;
+        state.fetchError = action.payload as string;
+      });
   },
 });
 
@@ -140,7 +153,9 @@ export const {
   setAllTracks,
   setFetchError,
   setFetchIsLoading,
-  setFilter,
-  clearFilter,
+  setFavoriteTracks,
+  addLikedTracks,
+  removeLikedTracks,
 } = trackSlice.actions;
+
 export const trackSliceReducer = trackSlice.reducer;
