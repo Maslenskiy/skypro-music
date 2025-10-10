@@ -42,20 +42,15 @@ export default function Signin() {
         return getTokens({ email, password });
       })
       .then((res) => {
-        console.log(res);
-        dispatch(setAccessToken(res.access));
-        dispatch(setRefreshToken(res.refresh));
+        dispatch(setAccessToken(res.access))
+          dispatch(setRefreshToken(res.refresh))
         router.push('/music/main');
       })
       .catch((error) => {
         if (error instanceof AxiosError) {
           if (error.response) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
             setErrorMessage(error.response.data.message);
           } else if (error.request) {
-            console.log(error.request);
             setErrorMessage('Отсутствует интернет, повторите попытку позднее');
           } else {
             setErrorMessage('Неизвестная ошибка, повторите попытку позднее');

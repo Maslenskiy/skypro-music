@@ -13,12 +13,10 @@ import {
 } from '@/store/features/trackSlice';
 import { MusicData } from '@/sharedTypes/sharedTypes';
 import ProgressBar from '../ProgressBar/ProgressBar';
-import { useLikeTrack } from '@/hooks/useLikeTracks';
 
 export default function Bar() {
   const currentTrack = useAppSelector((state) => state.tracks.currentTrack);
   const isPlay = useAppSelector((state) => state.tracks.isPlay);
-  const favoriteTracks = useAppSelector((state) => state.tracks.favoriteTracks);
   const dispatch = useAppDispatch();
   const [isLoop, setIsLoop] = useState(false);
   const [volume, setVolume] = useState(0.5);
@@ -27,7 +25,6 @@ export default function Bar() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const playlist = useAppSelector((state) => state.tracks.tracks);
   const isShuffle = useAppSelector((state) => state.tracks.isShuffle);
-  const { toggleLike, errorMsg, loadingTrackId } = useLikeTrack();
 
   useEffect(() => {
     if (audioRef.current) {
@@ -131,18 +128,6 @@ export default function Bar() {
   const ontoggleShuffle = () => {
     dispatch(toggleShuffle());
   };
-
-  // Проверяем, является ли текущий трек избранным
-  const isCurrentTrackLiked = currentTrack ? favoriteTracks.some(track => track._id === currentTrack._id) : false;
-  const isCurrentTrackLoading = currentTrack ? loadingTrackId === currentTrack._id : false;
-
-  // Обработчик ошибок лайков
-  useEffect(() => {
-    if (errorMsg) {
-      alert(errorMsg);
-    }
-  }, [errorMsg]);
-
   return (
     <div className={styles.bar}>
       <audio
@@ -252,10 +237,7 @@ export default function Bar() {
                   className={classnames(
                     styles.player__btnShuffle,
                     styles.btnIcon,
-                    { [styles.activeIcon]: isCurrentTrackLiked }
                   )}
-                  onClick={() => currentTrack && toggleLike(currentTrack)}
-                  style={{ cursor: 'pointer' }}
                 >
                   <svg className={styles.trackPlay__likeSvg}>
                     <use xlinkHref="/img/icon/sprite.svg#icon-like"></use>
@@ -263,7 +245,7 @@ export default function Bar() {
                 </div>
                 <div
                   className={classnames(
-                    styles.player__btnShuffle,
+                    styles.trackPlay__dislike,
                     styles.btnIcon,
                   )}
                 >

@@ -46,12 +46,11 @@ export default function SignUp() {
     setIsLoading(true);
 
     try {
-      const response = await registerUserReturn({
+      await registerUserReturn({
         email,
         password,
         username: email,
       });
-      console.log(response);
       router.push('/music/main');
     } catch (error) {
       if (error instanceof AxiosError) {

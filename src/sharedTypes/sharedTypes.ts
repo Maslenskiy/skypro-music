@@ -9,4 +9,5 @@ export interface MusicData {
   logo: string | null;
   track_file: string;
   stared_user: number[];
+  
 }

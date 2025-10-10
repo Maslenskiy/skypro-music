@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  music-api:
+    build: .
+    ports:
+      - '7500:7500'
+    environment:
+      - PORT=7500
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
